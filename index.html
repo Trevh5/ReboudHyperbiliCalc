@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rebound Hyperbili Calculator 2019</title>
+ 
+<link rel="stylesheet" href="main.css">
+
+</head>
+
+<body>
+
+
+<h1>Rebound Hyperbili Calculator 2019</h1>
+<h2>For infants &#8805; 35 weeks gestational age at birth, on their first inpatient phototherapy started by 5 days of age.</h2>
+
+<br>
+Probablility:<p id="probability">Enter values to calculate</p>
+Gestational age at birth (weeks):<br>Valid range = 35 to 42 weeks
+<br>
+<input type="text" name="Gestational_Age" id="gestational_age">
+<br><br><br>
+AAP phototherapy threshold in mg/dL (<a href="F1.pdf" style="color: #4CAF50">see chart</a>):<br>Valid range = 4 to 21 mg/dL
+<br>
+<input type="text" name="AAP Threshold" id="aap_threshold">
+<br><br><br>
+Baby's TSB (in mg/dL) when you stopped lights:<br>Valid range = 3 to 20 mg/dL
+<br>
+<input type="text" name="TSB" id="tsb">
+<br><br><br>
+<button class="button1" onclick="calculate()">Calculate</button>
+
+<br><br><br>
+<a href="F1.pdf" style="color: #4CAF50">AAP phototherapy threshold chart</a>
+<br><br>
+Calculations based on <a href="https://doi.org/10.1542/peds.2018-3712" style="color: #4CAF50"> this paper.</a>
+<br><br>
+
+Disclaimers: Probability result is more accurate for 38 weeks GA and above; may be off by up to 5% for 35 to 37 6/7 weeks. Not prospectively or externally validated, not valid for babies > 5 days old at the start of treatment, ONLY used for FIRST phototherapy treatment, not valid for subsequent phototherapy.  AUROC 0.877
+<br><br>
+As with any online calculator, this is intended as a tool and should not be used as a substitute for clinical judgment. We cannot be held responsible in any way for decisions made using this tool.
+
+
+
+<br><br><br>
+<h3>Site created by: Miguel L. Knochel, MD FAAP, Glen F. Huff, MD, and Trevor J. Huff.</h3>
+
+
+<script>
+	
+function calculate(){
+	gest_age = document.getElementById("gestational_age").value;
+	threshold = document.getElementById("aap_threshold").value;
+	tsb = document.getElementById("tsb").value;
+	if(gest_age<35||gest_age>42||threshold<4||threshold>21||tsb<3||tsb>20){
+		document.getElementById("probability").innerHTML = "ERROR: One or more inputs out of range";
+	}
+	else{
+		if(gest_age<38){
+		temp_score = 15.5;
+	}
+	else{
+		temp_score = 0;
+	}
+	temp_score = temp_score - (4.3 * (threshold - tsb));
+	temp_score = 1/(1+Math.exp(-(0.097 * temp_score - 2.84)));
+	temp_score = temp_score * 100
+	document.getElementById("probability").innerHTML = temp_score.toFixed(1) + "%";
+}
+	
+}
+</script>
+
+</body>
+</html>
+
+
+
+
